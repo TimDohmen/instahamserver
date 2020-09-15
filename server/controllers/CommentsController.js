@@ -12,6 +12,17 @@ export class CommentsController extends BaseController {
       .use(Auth0Provider.getAuthorizedUserInfo)
       .post("", this.create)
       .delete("/:id", this.remove)
+      .put("/:id", this.edit)
+  }
+  async edit(req, res, next) {
+    try {
+      req.body.id = req.params.id
+      req.body.creatorEmail = req.userInfo.email;
+      let data = await commentsService.edit(req.body)
+      res.send(data)
+    } catch (error) {
+      next(error)
+    }
   }
   async getAll(req, res, next) {
     try {

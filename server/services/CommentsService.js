@@ -31,6 +31,10 @@ class CommentsService {
     await dbContext.Comments.findByIdAndDelete(id);
     return "successfully deleted"
   }
+  async edit(body) {
+    let comment = await dbContext.Comments.findByIdAndUpdate(body.id, body, { new: true })
+    return comment
+  }
 }
 
 export const commentsService = new CommentsService();

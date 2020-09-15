@@ -2,6 +2,10 @@ import { dbContext } from "../db/DbContext";
 import { BadRequest, UnAuthorized } from "../utils/Errors";
 
 class PostsService {
+    async edit(body) {
+        let post = await dbContext.Posts.findByIdAndUpdate(body.id, body, { new: true })
+        return post
+    }
     async find(query = {}) {
         let values = await dbContext.Posts.find(query).populate(
             "creator",
