@@ -1,7 +1,6 @@
-import express from "express";
 import BaseController from "../utils/BaseController";
 import { postsService } from "../services/PostsService";
-import auth0Provider from "@bcwdev/auth0provider";
+import { Auth0Provider } from "@bcwdev/auth0provider";
 import { commentsService } from "../services/CommentsService";
 
 export class PostsController extends BaseController {
@@ -10,11 +9,15 @@ export class PostsController extends BaseController {
         this.router
             .get("", this.getAll)
             .get("/:id/comments", this.getCommentsByPostId)
-
+            .get("/:id", this.getById)
             // NOTE: Beyond this point all routes require Authorization tokens (the user must be logged in)
-            .use(auth0Provider.getAuthorizedUserInfo)
+            .use(Auth0Provider.getAuthorizedUserInfo)
             .post("", this.create)
             .delete("/:id", this.remove)
+    }
+    async getById(req, res, next) {
+        let data = await postsService.findById(req.params.id)
+        res.send(data)
     }
     async getCommentsByPostId(req, res, next) {
         try {
