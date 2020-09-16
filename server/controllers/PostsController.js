@@ -29,8 +29,13 @@ export class PostsController extends BaseController {
         }
     }
     async getById(req, res, next) {
-        let data = await postsService.findById(req.params.id)
-        res.send(data)
+        try {
+            let data = await postsService.findById(req.params.id)
+            let votes = await votesService.find({ post: req.params.id })
+            res.send({ data, votes })
+        } catch (error) {
+            next(error)
+        }
     }
     async getCommentsByPostId(req, res, next) {
         try {
