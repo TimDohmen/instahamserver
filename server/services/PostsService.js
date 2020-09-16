@@ -14,14 +14,18 @@ class PostsService {
         return values;
     }
     async findById(id) {
-        let value = await dbContext.Posts.findById(id);
+        let value = await dbContext.Posts.findById(id).populate(
+            "creator",
+            "name picture"
+        );
         if (!value) {
             throw new BadRequest("Invalid Id");
         }
         return value;
     }
     async create(body) {
-        return await dbContext.Posts.create(body)
+        let post = await dbContext.Posts.create(body)
+        return await this.findById(post._id)
     }
     async remove(id, email) {
         // let post = await dbContext.Posts.findOne({_id: id, creatorEmail: email})
