@@ -32,7 +32,7 @@ class CommentsService {
     return "successfully deleted"
   }
   async edit(body) {
-    let comment = await dbContext.Comments.findByIdAndUpdate(body.id, body, { new: true })
+    let comment = await dbContext.Comments.findOneAndUpdate({ _id: body.id, creatorEmail: body.creatorEmail }, body, { new: true })
     return comment
   }
 }
