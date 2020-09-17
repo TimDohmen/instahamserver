@@ -32,7 +32,7 @@ class VotesService {
     return "successfully deleted"
   }
   async edit(body) {
-    let vote = await dbContext.Votes.findByIdAndUpdate(body.id, body, { new: true })
+    let vote = await dbContext.Votes.findOneAndUpdate({ _id: body.id, creatorEmail: body.creatorEmail }, body, { new: true })
     return vote
   }
 }
