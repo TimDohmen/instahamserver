@@ -3,7 +3,7 @@ import { BadRequest, UnAuthorized } from "../utils/Errors";
 
 class PostsService {
     async edit(body) {
-        let post = await dbContext.Posts.findByIdAndUpdate(body.id, body, { new: true })
+        let post = await dbContext.Posts.findOneAndUpdate({ _id: body.id, creatorEmail: body.creatorEmail }, body, { new: true })
         return post
     }
     async find(query = {}) {

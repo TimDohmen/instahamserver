@@ -12,8 +12,8 @@ export class PostsController extends BaseController {
             .get("/:id/comments", this.getCommentsByPostId)
             .get("/:id/votes", this.getVotesByPostId)
             .get("/:id", this.getById)
-            // NOTE: Beyond this point all routes require Authorization tokens (the user must be logged in)
             .use(Auth0Provider.getAuthorizedUserInfo)
+            // NOTE: Beyond this point all routes require Authorization tokens (the user must be logged in)
             .post("", this.create)
             .put("/:id", this.edit)
             .delete("/:id", this.remove)
@@ -63,7 +63,6 @@ export class PostsController extends BaseController {
     }
     async create(req, res, next) {
         try {
-            // NOTE NEVER TRUST THE CLIENT TO ADD THE CREATOR ID
             req.body.creatorEmail = req.userInfo.email;
             let data = await postsService.create(req.body)
             return res.send(data)
